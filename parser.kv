@@ -1,0 +1,44 @@
+<ParserRoot>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 15
+
+    BoxLayout:
+        size_hint_y: None
+        height: 40
+        spacing: 10
+        Label:
+            text: 'URL товара:'
+            size_hint_x: None
+            width: 100
+        TextInput:
+            id: url_input
+            hint_text: 'https://example.com'
+            multiline: False
+
+    Button:
+        text: 'Начать парсинг' if not root.is_parsing else 'Парсинг...'
+        disabled: root.is_parsing
+        size_hint_y: None
+        height: 50
+        background_color: 0.2, 0.6, 0.9, 1
+        on_press: root.start_parsing()
+
+    ScrollView:
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.95, 0.95, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            id: results_label
+            text: root.results_text
+            size_hint_y: None
+            height: max(self.texture_size[1], self.parent.height)
+            text_size: self.width, None
+            padding: 15, 15
+            halign: 'left'
+            valign: 'top'
+            color: 0.1, 0.1, 0.1, 1
