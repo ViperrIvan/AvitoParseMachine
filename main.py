@@ -32,12 +32,12 @@ class ParserRoot(BoxLayout):
             driver.get(url)
             WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "styles-module-root-EEwdX.styles-module-root_size_s-_OIDv.styles-module-root_preset_overlay-_8Li4"))).click()
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, "styles-module-root-YyvDu"))).click()
             html = driver.page_source
             driver.quit()
 
-            way_to_name = "html > body > div > div > buyer-pages-mfe-location > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > p > a"
+            way_to_name = "html > body > div > div > buyer-pages-mfe-location > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > h2 > a"
             way_to_price = "html > body > div > div > buyer-pages-mfe-location > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > div > span > div > div > p > strong > span"
 
             soup = BeautifulSoup(html, 'html.parser')
@@ -46,13 +46,15 @@ class ParserRoot(BoxLayout):
             results = []
 
             prices = soup.select(way_to_price)
-            df = pd.DataFrame({"Name": [], "Price": []})
+            res_df = pd.DataFrame({"Name": [], "Price": [], "Url": []})
             for name, price in zip(names, prices):
+                pd.concat([[name.text, price.text, name["href"]], res_df], ignore_index=True)
                 results.append(name)
                 results.append(price)
 
 
             self._show_results(results)
+            self._save_excel(res_df)
 
         except Exception as e:
             self.results_text = f"Ошибка: {str(e)}"
@@ -65,11 +67,13 @@ class ParserRoot(BoxLayout):
             return
 
         formatted = "\n".join(
-            f"{i}. {results[i-1].text}\n   {results[i].text}"
+            f"{i}. {results[i-1].text}\n{results[i].text}\nhttps://www.avito.ru/{results[i-1]['href']}"
             for i in range(1, len(results), 2)
         )
         self.results_text = formatted
 
+    def _save_excel(self, df):
+        df.to_excel('results.xlsx', sheet_name='Users', index=False)
 
 class ParserApp(App):
 
