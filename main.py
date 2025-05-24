@@ -30,8 +30,10 @@ class ParserRoot(BoxLayout):
             options = webdriver.ChromeOptions()
             driver = webdriver.Chrome(options=options)
             driver.get(url)
-            WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "button"))).click()
-            WebDriverWait(driver, 5)
+            WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.CLASS_NAME, "styles-module-root-EEwdX.styles-module-root_size_s-_OIDv.styles-module-root_preset_overlay-_8Li4"))).click()
+            WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.CLASS_NAME, "styles-module-root-YyvDu"))).click()
             html = driver.page_source
             driver.quit()
 
