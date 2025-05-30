@@ -1,4 +1,3 @@
-```markdown
 # Парсер Avito с GUI
 
 Приложение для парсинга данных с Avito с графическим интерфейсом на Kivy, разработанное с соблюдением принципов SOLID.
@@ -29,7 +28,6 @@
 ```bash
 git clone https://github.com/вашusername/avito-parser.git
 cd avito-parser
-```
 
 2. Создайте виртуальное окружение:
 ```bash
